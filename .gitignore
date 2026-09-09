@@ -1,0 +1,26 @@
+# Eclipse & IDE
+.metadata
+.project
+.classpath
+.settings/
+*.tmp
+*.bak
+*.swp
+*~
+
+# Java & Build
+*.class
+target/
+build/
+bin/
+dist/
+
+# OS specific
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Obsidian Cache
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/.trash/

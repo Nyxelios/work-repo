@@ -1,0 +1,14 @@
+{
+  "theme": "obsidian",
+  "cssTheme": "Things",
+  "interfaceFontFamily": "LXGW Bright",
+  "textFontFamily": "霞鹜文楷",
+  "baseFontSizeAction": true,
+  "baseFontSize": 18,
+  "monospaceFontFamily": "Source Code Pro,Cascadia Code",
+  "accentColor": "",
+  "enabledCssSnippets": [
+    "lineheight",
+    "mermaid"
+  ]
+}

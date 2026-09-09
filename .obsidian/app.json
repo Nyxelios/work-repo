@@ -1,0 +1,18 @@
+{
+  "promptDelete": false,
+  "readableLineLength": true,
+  "alwaysUpdateLinks": true,
+  "showUnsupportedFiles": true,
+  "attachmentFolderPath": "Galaxycore/附件",
+  "newFileLocation": "folder",
+  "pdfExportSettings": {
+    "includeName": true,
+    "pageSize": "Letter",
+    "landscape": false,
+    "margin": "0",
+    "downscalePercent": 100
+  },
+  "newLinkFormat": "relative",
+  "useMarkdownLinks": true,
+  "newFileFolderPath": "Galaxycore/4.杂项与备忘"
+}
