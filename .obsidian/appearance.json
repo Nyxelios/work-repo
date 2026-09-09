@@ -1,10 +1,10 @@
 {
   "theme": "obsidian",
-  "cssTheme": "Things",
-  "interfaceFontFamily": "LXGW Bright",
-  "textFontFamily": "霞鹜文楷",
+  "cssTheme": "Minimal",
+  "interfaceFontFamily": "LXGW Bright,Consolas",
+  "textFontFamily": "霞鹜文楷,Ubuntu Mono",
   "baseFontSizeAction": true,
-  "baseFontSize": 18,
+  "baseFontSize": 16,
   "monospaceFontFamily": "Source Code Pro,Cascadia Code",
   "accentColor": "",
   "enabledCssSnippets": [
