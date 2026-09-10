@@ -196,6 +196,11 @@ private void validateRecipeProgramsByBomVersion(String bomVersion, String recipe
 ### [2026-09-10] BOM程序Recipe配置增加T开头PDCU及非T开头AU校验限制
 
 - **需求人**：黄志平
+- **所属代码分支**：`feature/bomRecipeConfig`（已合并至 `env/pirun`）
+- **核心提交记录**：
+  - `18bde2b7`：T*版本程序名必须包含PDCU
+  - `dc052dff`：非T*版本程序名必须包含AU
+  - `f28b92d2`：Merge branch 'feature/bomRecipeConfig' into env/pirun
 - **需求 / 背景**：
   - 在 BOM Recipe 程序配置（`recipeProgramConfig`）业务中，规范不同工艺类型的机台程序名命名标准；
   - 业务规定：
