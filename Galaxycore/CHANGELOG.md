@@ -11,6 +11,7 @@
 
 | 更新日期       | 功能 / 任务名称               | 需求人 | 涉及模块                          | 状态    |
 | :--------- | :---------------------- | :-- | :---------------------------- | :---- |
+| 2026-09-10 | BOM程序Recipe配置增加T开头版本PDCU校验限制 | -   | PRP / Recipe程序配置 (recipeProgramConfig) | ✅ 已完成 |
 | 2026-09-09 | 胶水处理与过滤查询排除报废和用尽胶水      | -   | Tool / 胶水管理 (glueOverview)    | ✅ 已完成 |
 | 2026-09-09 | 工单物料绑定关系抽取与工厂/等级校验Bug修复 | -   | WIP / 工单模块 (WorkOrderProduce) | ✅ 已完成 |
 | 2026-09-08 | 内批+库位添加自动清空与全部清空功能      | 龚钱  | WIP / rwAssayNoLocation       | ✅ 已完成 |
@@ -20,6 +21,36 @@
 ---
 
 ## 📝 详细更新记录
+### [2026-09-10] BOM程序Recipe配置增加T开头版本PDCU校验限制
+- **需求人**：-
+- **需求 / 背景**：
+  - 在 BOM Recipe 程序配置（`recipeProgramConfig`）业务中，针对研发测试及特定试产工艺的 BOM 版本（以 `T` 或 `t` 开头），规范其机台程序名命名标准；
+  - 业务规定：添加或维护以 `T` 开头的 BOM 版本时，配置的程序名（`Recipe程序`）和 `inline程序名`（`Inline Recipe程序`）中必须包含关键字 `PDCU`，防止研发试产批次因调错程序导致工艺事故；
+  - 需在前端界面交互弹窗（新增、编辑、批量修改程序）与后端核心服务层进行统一强校验卡控，覆盖全部配置维护场景。
+- **核心代码改动**：
+  - `PrpSetupServiceImpl.java`：
+    - 新增私有辅助方法 `isTBomVersion(String bomVersion)`、`containsPdcu(String programName)` 与 `validatePdcuRecipePrograms(String bomVersion, String recipeProgram, String recipeProgramInline)`；
+    - 在 `ensureRecipeProgramConfigValues`（单条保存/更新）中增加卡控：当 BOM 版本以 `T`/`t` 开头时，对非空的 `recipeProgram` 及 `recipeProgramInline` 强制校验必须包含 `PDCU`（不区分大小写），若不包含则抛出 `MyCimParameterException` 拦截；
+    - 在 `batchUpdateRecipeProgramConfigs`（批量修改程序）中增加卡控：当选中的配置属于 T 开头的 BOM 版本时，检查替换后的最终程序名与 inline 程序名，若不含 `PDCU` 则拒绝更新；
+  - `recipeProgramConfig.js`：
+    - 增加 `isTBomVersion(bomVersion)` 和 `containsPdcu(str)` 前端校验函数；
+    - 在配置编辑保存窗口（`saveEditor`）中增加前置校验：当 BOM 版本以 T 开头时，填写的 Recipe 程序或 Inline Recipe 程序若不含 `PDCU`，弹窗友好提示并阻止发起 Ajax 请求；
+    - 在批量修改窗口（`updatePrograms`）中增加前置校验：若选中的记录中包含 T 开头的 BOM 版本，检查填写的程序名，不符合规则时即时拦截提示。
+- **数据库变动 (SQL)**：
+  ```sql
+  -- 本次无数据库表结构变更
+  ```
+- **配置与部署注意**：
+  - 重新编译打包 `prp` 核心模块：执行 `ant jar.prp` 成功生成 `prpClient.jar`；
+  - 前端静态 JS（`recipeProgramConfig.js`）部署或刷新浏览器缓存后生效。
+- **自测情况**：
+  - 编译构建验证：执行 `ant jar.core` 生成 `valueobject.jar`，执行 `ant jar.prp` 编译通过（`BUILD SUCCESSFUL`）；
+  - 单条新增/编辑：BOM版本为 `T01` 时，若程序名不含 `PDCU`，前端弹窗提示并拦截；程序名包含 `PDCU` 时正常保存；
+  - 留空项逻辑：单机台工序仅维护主程序名，未填写的 inline 程序名不强制要求输入（符合原业务“不能同时为空”的生产实际）；
+  - 非 T 开头版本不受任何限制；
+  - 批量修改场景对 T 开头版本正常拦截。
+
+---
 
 ### [2026-09-09] 胶水处理与过滤查询排除报废和用尽胶水
 - **需求人**：-
