@@ -76,6 +76,7 @@ tags: [定时任务, 需求交付, 工单管理, 邮件提醒, 分布式锁, Don
 * **表格样式**：
   * 表头：深蓝色背景（`#1F4E79`），白色加粗居中文字。
   * 表体：边框贴合（`border-collapse: collapse; border: 1px solid #000000;`），产品型号居左，入库数量居中展示。
+  * **单位换算规则**：入库数量（PCS 换算为 K）当 $\ge 1000$ 时整除 1000 抹去小数（如 105615 变为 105）；当 $< 1000$ 时保留 1 位小数（如 800 变为 0.8）。
 
 ---
 
@@ -89,6 +90,6 @@ tags: [定时任务, 需求交付, 工单管理, 邮件提醒, 分布式锁, Don
    copy /Y stage\gc.jar D:\data\programs\Oracle\Middleware\user_projects\domains\base_domain\autodeploy\mycim2\WEB-INF\lib\gc.jar
    ```
 2. **测试与验证入口**：
-   * **自动执行**：每 2 分钟（或配置的 Cron）自动抢锁触发一次。
+   * **自动调度执行**：**每周一早上 09:00**（Cron: `0 0 9 ? * MON`）自动抢锁触发一次。
    * **日志核验**：日志统一输出在 `logs/ap/ComExpWorkOrderScheduleTask-yyyy-MM-dd.log`。
    * **管理端强行触发**：调用 `/mycim2/self/triggerComExpJob?force=true` 可立即跳过冷却期执行。
