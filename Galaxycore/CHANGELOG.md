@@ -11,6 +11,8 @@
 
 | 更新日期 | 功能 / 任务名称 | 需求人 | 涉及模块 | 状态 |
 | :--- | :--- | :--- | :--- | :--- |
+| 2026-09-14 | [COM产线合批Bin数量一致性强卡控与CATE出站测试文件硬拦截](./30-任务工作流与追踪/33-工作日志与周报/2026-09-14.md) | - | WIP/PRP / 批次合批与ATE出站 (checkComMergeBinQty / saveDefect) | ✅ 已完成 |
+| 2026-09-14 | [工艺流程Route与Process区别及删除指南](./10-业务与功能SOP/16-工艺规则与系统配置/工艺流程Route与Process区别及删除指南.md) | - | PRP / 工艺管理 (PrpSetupAction) | ✅ 已完成 |
 | 2026-09-11 | [COM实验工单入库数据汇总与邮件提醒定时任务](./30-任务工作流与追踪/32-已交付需求(Done)/2026%20Q3/COM实验工单入库数据汇总与邮件提醒定时任务.md) | - | GC / 定时任务与集群分布式锁 (ComExpWorkOrderScheduleTask) | ✅ 已完成 |
 | 2026-09-10 | [开工单卡控扩展（返工类型OA单号校验）与专用卡控服务抽取](./10-业务与功能SOP/11-工单与排产管理/工单系统综合规范.md) | - | PRP/WIP / 工单卡控 (WorkOrderControlService) | ✅ 已完成 |
 | 2026-09-10 | [BOM程序Recipe配置增加T开头版本PDCU及非T开头版本AU校验限制](./10-业务与功能SOP/16-工艺规则与系统配置/BOM程序Recipe配置与版本校验规则.md) | 黄志平 | PRP / Recipe程序配置 (recipeProgramConfig) | ✅ 已完成 |
