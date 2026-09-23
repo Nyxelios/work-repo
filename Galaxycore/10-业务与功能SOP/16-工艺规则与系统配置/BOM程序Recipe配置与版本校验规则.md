@@ -76,7 +76,15 @@ Recipe 程序配置前端界面位于 `/mycim2/recipeProgramConfig.do`，提供�
 ### 3.4 删除配置
 - 选中一条或多条配置记录，点击 **【删除】**，二次确认后执行物理删除并写入历史变更表（`DELETE` 类型事务）。
 
+### 3.5 LOT测试程序配置联动抓取量产Recipe（需求人：刘姣）
+在【LOT测试程序配置】（`/mycim2/lotTestPragramConfig.do`）页面添加工单测试程序时：
+1. 勾选 **【抓取量产Recipe】** 按钮；
+2. 系统自动解析当前工单型号（去除最后一个 `-` 及其后尾缀，保留主型号）作为 `BOM_ID`，工单自身的 `bomVersion` 作为版本号；
+3. 查询本表 `GC_RECIPE_PROGRAM_CONFIG` 中对应 `CONFIG_TYPE = 'MP'` 的量产程序；
+4. 联动更新/新增本表中当前工单的 `PVT` 记录（工步号同步量产工步号，程序名同步量产程序），并同步记录 `GC_RECIPE_PROGRAM_CONFIG_H` 历史表。详细操作规范参见交付文档：[LOT测试程序配置增加抓取量产Recipe功能](../../30-任务工作流与追踪/32-已交付需求(Done)/2026%20Q3/LOT测试程序配置增加抓取量产Recipe功能.md)。
+
 ---
+
 
 ## 4. 程序名与 BOM 版本校验卡控规则
 
@@ -228,3 +236,21 @@ private void validateRecipeProgramsByBomVersion(String bomVersion, String recipe
     - 01 版本配置包含 AU 正常保存，不含 AU 弹窗拦截；
   - 批量修改场景：针对选中的记录分别校验对应版本的关键字；
   - 留空项逻辑：单机台工序仅维护主程序名时，未填写的 inline 程序名不强制要求输入。
+
+### [2026-09-20] LOT测试程序配置增加抓取量产Recipe功能
+
+- **需求人**：刘姣
+- **所属模块**：WIP / PRP
+- **相关页面**：`/mycim2/lotTestPragramConfig.do`（`lotTestPragramConfigForm.js`）
+- **需求 / 背景**：
+  - 在 LOT 测试程序配置中，新增工单时提供【抓取量产Recipe】复选框；
+  - 勾选后，系统解析工单型号（去掉最后一个 `-` 及其后尾缀）作为 BOM 编号，并读取工单自身的 BOM 版本，查询 `GC_RECIPE_PROGRAM_CONFIG` 表中的 MP 量产程序（`CONFIG_TYPE = 'MP'`）；
+  - 查询当前工单已有的 PVT 记录（`CONFIG_TYPE = 'PVT'`），存在则按量产程序更新主程序与从程序名并记历史（`MODIFY`），不存在则同步量产工步号并新增 PVT 记录与记历史（`CREATE`）；未找到量产程序时进行阻断校验提示；未勾选则保持原逻辑不变。
+- **核心代码改动**：
+  - `lotTestPragramConfigForm.js`：添加复选框并在 Ajax 请求中传递 `syncRecipeProgram`；
+  - `LotTestPragramConfig.java`：增加 `@Transient private Boolean syncRecipeProgram`；
+  - `LotTestPragramConfigAction.java`：解析参数并调用重载服务，绑定线程操作人上下文；
+  - `PrpSetupService.java` / `PrpSetupServiceImpl.java`：新增重载方法，执行 MP/PVT 匹配、新增/更新及历史写入。
+- **验证与交付**：
+  - `build.cmd jar.prp` 编译通过；Action 类编译通过。详细交付说明见：[LOT测试程序配置增加抓取量产Recipe功能](../../30-任务工作流与追踪/32-已交付需求(Done)/2026%20Q3/LOT测试程序配置增加抓取量产Recipe功能.md)。
+
