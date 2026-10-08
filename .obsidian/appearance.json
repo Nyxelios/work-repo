@@ -4,7 +4,7 @@
   "interfaceFontFamily": "LXGW Bright,Consolas",
   "textFontFamily": "霞鹜文楷,Ubuntu Mono",
   "baseFontSizeAction": true,
-  "baseFontSize": 16,
+  "baseFontSize": 14,
   "monospaceFontFamily": "Source Code Pro,Cascadia Code",
   "accentColor": "",
   "enabledCssSnippets": [
